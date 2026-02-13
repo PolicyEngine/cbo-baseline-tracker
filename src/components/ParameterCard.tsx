@@ -24,7 +24,8 @@ function formatValue(value: number, unit: string): string {
 }
 
 function Sparkline({ oldValues, newValues }: { oldValues: number[]; newValues: number[] }) {
-  const allValues = [...oldValues, ...newValues];
+  const allValues = [...oldValues.filter(v => v !== undefined), ...newValues.filter(v => v !== undefined)];
+  if (allValues.length === 0) return null;
   const min = Math.min(...allValues);
   const max = Math.max(...allValues);
   const range = max - min || 1;
@@ -63,16 +64,21 @@ function Sparkline({ oldValues, newValues }: { oldValues: number[]; newValues: n
 }
 
 export function ParameterCard({ param, paramKey: _paramKey, onClick }: ParameterCardProps) {
-  const years = Object.keys(param.new).sort();
-  const latestYear = years[years.length - 1];
+  const newYears = Object.keys(param.new).sort();
+  const latestYear = newYears[newYears.length - 1];
   const oldLatest = param.old[latestYear];
   const newLatest = param.new[latestYear];
-  const pctLatest = param.pct_change[latestYear];
 
-  const oldValues = years.map((y) => param.old[y]);
-  const newValues = years.map((y) => param.new[y]);
+  // Find a year that has both old and new for pct_change
+  const pctYears = Object.keys(param.pct_change).sort();
+  const pctLatest = pctYears.length > 0 ? param.pct_change[pctYears[pctYears.length - 1]] : undefined;
 
-  const isPositiveChange = pctLatest >= 0;
+  const oldYears = Object.keys(param.old).sort();
+  const oldValues = oldYears.map((y) => param.old[y]);
+  const newValues = newYears.map((y) => param.new[y]);
+
+  const hasComparison = oldLatest !== undefined && pctLatest !== undefined;
+  const isPositiveChange = pctLatest !== undefined && pctLatest >= 0;
   const changeColor = isPositiveChange ? 'green' : 'red';
 
   return (
@@ -94,18 +100,26 @@ export function ParameterCard({ param, paramKey: _paramKey, onClick }: Parameter
         </Group>
 
         <Group gap="xs" align="center">
-          <Text size="xs" c="dimmed">
-            {formatValue(oldLatest, param.unit)}
-          </Text>
-          <Text size="xs" c="dimmed">
-            &rarr;
-          </Text>
-          <Text size="sm" fw={500}>
-            {formatValue(newLatest, param.unit)}
-          </Text>
-          <Badge size="xs" variant="light" color={changeColor}>
-            {formatPercent(pctLatest)}
-          </Badge>
+          {hasComparison ? (
+            <>
+              <Text size="xs" c="dimmed">
+                {formatValue(oldLatest, param.unit)}
+              </Text>
+              <Text size="xs" c="dimmed">
+                &rarr;
+              </Text>
+              <Text size="sm" fw={500}>
+                {formatValue(newLatest, param.unit)}
+              </Text>
+              <Badge size="xs" variant="light" color={changeColor}>
+                {formatPercent(pctLatest!)}
+              </Badge>
+            </>
+          ) : (
+            <Text size="sm" fw={500}>
+              {formatValue(newLatest, param.unit)}
+            </Text>
+          )}
         </Group>
 
         <Sparkline oldValues={oldValues} newValues={newValues} />

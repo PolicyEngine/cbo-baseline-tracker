@@ -10,53 +10,71 @@ interface ComparisonChartProps {
 }
 
 export function ComparisonChart({ param, paramKey: _paramKey }: ComparisonChartProps) {
-  const years = Object.keys(param.new).sort();
-  const oldValues = years.map((y) => param.old[y]);
-  const newValues = years.map((y) => param.new[y]);
+  const newYears = Object.keys(param.new).sort();
+  const oldYears = Object.keys(param.old).sort();
+  const allYears = Array.from(new Set([...oldYears, ...newYears])).sort();
 
   const formatFn = param.unit === 'currency-USD' ? formatCurrency : formatCpiValue;
 
-  const hoverOld = years.map(
-    (y) => `Year: ${y}<br>Old: ${formatFn(param.old[y])}<br>Change: ${formatPercent(param.pct_change[y])}`,
-  );
-  const hoverNew = years.map(
-    (y) => `Year: ${y}<br>New: ${formatFn(param.new[y])}<br>Change: ${formatPercent(param.pct_change[y])}`,
-  );
+  const hasOld = oldYears.length > 0;
 
-  const traces: Data[] = [
-    {
-      x: years,
-      y: oldValues,
+  const traces: Data[] = [];
+
+  if (hasOld) {
+    traces.push({
+      x: oldYears,
+      y: oldYears.map((y) => param.old[y]),
       type: 'scatter' as const,
       mode: 'lines+markers' as const,
       name: 'Old baseline',
       line: { color: chartColors.oldBaseline, dash: 'dash' as const, width: 2 },
       marker: { size: 5 },
-      text: hoverOld,
+      text: oldYears.map(
+        (y) => {
+          const pct = param.pct_change[y];
+          return `Year: ${y}<br>Old: ${formatFn(param.old[y])}${pct !== undefined ? `<br>Change: ${formatPercent(pct)}` : ''}`;
+        },
+      ),
       hoverinfo: 'text' as const,
-    },
-    {
-      x: years,
-      y: newValues,
-      type: 'scatter' as const,
-      mode: 'lines+markers' as const,
-      name: 'New baseline',
-      line: { color: chartColors.newBaseline, width: 2 },
-      marker: { size: 5 },
-      text: hoverNew,
-      hoverinfo: 'text' as const,
-    },
-    {
-      x: [...years, ...years.slice().reverse()],
-      y: [...newValues, ...oldValues.slice().reverse()],
-      type: 'scatter' as const,
-      fill: 'toself' as const,
-      fillcolor: 'rgba(49, 151, 149, 0.1)',
-      line: { color: 'transparent' },
-      showlegend: false,
-      hoverinfo: 'skip' as const,
-    },
-  ];
+    });
+  }
+
+  traces.push({
+    x: newYears,
+    y: newYears.map((y) => param.new[y]),
+    type: 'scatter' as const,
+    mode: 'lines+markers' as const,
+    name: 'New baseline',
+    line: { color: chartColors.newBaseline, width: 2 },
+    marker: { size: 5 },
+    text: newYears.map(
+      (y) => {
+        const pct = param.pct_change[y];
+        return `Year: ${y}<br>New: ${formatFn(param.new[y])}${pct !== undefined ? `<br>Change: ${formatPercent(pct)}` : ''}`;
+      },
+    ),
+    hoverinfo: 'text' as const,
+  });
+
+  // Shaded fill between old and new for overlapping years
+  if (hasOld) {
+    const overlapYears = allYears.filter((y) => param.old[y] !== undefined && param.new[y] !== undefined);
+    if (overlapYears.length > 0) {
+      traces.push({
+        x: [...overlapYears, ...overlapYears.slice().reverse()],
+        y: [
+          ...overlapYears.map((y) => param.new[y]),
+          ...overlapYears.slice().reverse().map((y) => param.old[y]),
+        ],
+        type: 'scatter' as const,
+        fill: 'toself' as const,
+        fillcolor: 'rgba(49, 151, 149, 0.1)',
+        line: { color: 'transparent' },
+        showlegend: false,
+        hoverinfo: 'skip' as const,
+      });
+    }
+  }
 
   const layout: Partial<Layout> = {
     ...chartLayout,
