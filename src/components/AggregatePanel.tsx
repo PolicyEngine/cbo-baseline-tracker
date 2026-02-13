@@ -142,9 +142,9 @@ function AggregateChart({ data }: { data: AggregateImpacts }) {
   return (
     <Plot
       data={traces}
-      layout={layout}
+      layout={{ ...layout, height: 450 }}
       config={{ responsive: true }}
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', minHeight: 450 }}
     />
   );
 }
@@ -211,9 +211,9 @@ function FiscalBalanceChart({ data }: { data: AggregateImpacts }) {
   return (
     <Plot
       data={traces}
-      layout={layout}
+      layout={{ ...layout, height: 450 }}
       config={{ responsive: true }}
-      style={{ width: '100%', height: '100%' }}
+      style={{ width: '100%', minHeight: 450 }}
     />
   );
 }

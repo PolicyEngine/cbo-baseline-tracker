@@ -66,12 +66,15 @@ export function ChangeHeatmap({ parameters, category }: ChangeHeatmapProps) {
     },
   ];
 
+  const chartHeight = Math.max(400, filtered.length * 40 + 150);
+
   const layout: Partial<Layout> = {
     ...chartLayout,
     title: { text: 'Percentage change across parameters', font: chartLayout.font },
     xaxis: { title: { text: 'Year' }, dtick: 1 },
     yaxis: { automargin: true },
     margin: { ...chartLayout.margin, l: 200 },
+    height: chartHeight,
   };
 
   return (
@@ -79,7 +82,7 @@ export function ChangeHeatmap({ parameters, category }: ChangeHeatmapProps) {
       data={traces}
       layout={layout}
       config={{ responsive: true }}
-      style={{ width: '100%', height: Math.max(300, filtered.length * 30 + 100) }}
+      style={{ width: '100%', minHeight: chartHeight }}
     />
   );
 }
