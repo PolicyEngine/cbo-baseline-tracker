@@ -14,6 +14,7 @@
   "dependencies": {
     "@mantine/core": "^8.3.10",
     "@mantine/hooks": "^8.3.10",
+    "@policyengine/design-system": "^0.2.0",
     "@tabler/icons-react": "^3.36.0",
     "plotly.js": "^3.3.1",
     "react": "^19.2.0",
