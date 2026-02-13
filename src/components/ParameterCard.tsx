@@ -16,7 +16,10 @@ const categoryColors: Record<string, string> = {
   cpi: 'orange',
 };
 
-function formatValue(value: number, unit: string): string {
+function formatValue(value: number, unit: string, category: string): string {
+  if (category === 'cpi') {
+    return formatCpiValue(value);
+  }
   if (unit === 'currency-USD') {
     return formatCurrency(value);
   }
@@ -65,20 +68,21 @@ function Sparkline({ oldValues, newValues }: { oldValues: number[]; newValues: n
 
 export function ParameterCard({ param, paramKey: _paramKey, onClick }: ParameterCardProps) {
   const newYears = Object.keys(param.new).sort();
-  const latestYear = newYears[newYears.length - 1];
-  const oldLatest = param.old[latestYear];
-  const newLatest = param.new[latestYear];
-
-  // Find a year that has both old and new for pct_change
-  const pctYears = Object.keys(param.pct_change).sort();
-  const pctLatest = pctYears.length > 0 ? param.pct_change[pctYears[pctYears.length - 1]] : undefined;
-
   const oldYears = Object.keys(param.old).sort();
-  const oldValues = oldYears.map((y) => param.old[y]);
   const newValues = newYears.map((y) => param.new[y]);
+  const oldValues = oldYears.map((y) => param.old[y]);
 
-  const hasComparison = oldLatest !== undefined && pctLatest !== undefined;
-  const isPositiveChange = pctLatest !== undefined && pctLatest >= 0;
+  // Find the latest year that exists in both old and new for comparison
+  const overlapYears = newYears.filter((y) => param.old[y] !== undefined).sort();
+  const comparisonYear = overlapYears.length > 0 ? overlapYears[overlapYears.length - 1] : null;
+
+  const newLatest = param.new[newYears[newYears.length - 1]];
+  const oldComparison = comparisonYear ? param.old[comparisonYear] : undefined;
+  const newComparison = comparisonYear ? param.new[comparisonYear] : undefined;
+  const pctComparison = comparisonYear ? param.pct_change[comparisonYear] : undefined;
+
+  const hasComparison = oldComparison !== undefined && newComparison !== undefined && pctComparison !== undefined;
+  const isPositiveChange = pctComparison !== undefined && pctComparison >= 0;
   const changeColor = isPositiveChange ? 'green' : 'red';
 
   return (
@@ -103,21 +107,21 @@ export function ParameterCard({ param, paramKey: _paramKey, onClick }: Parameter
           {hasComparison ? (
             <>
               <Text size="xs" c="dimmed">
-                {formatValue(oldLatest, param.unit)}
+                {formatValue(oldComparison!, param.unit, param.category)}
               </Text>
               <Text size="xs" c="dimmed">
                 &rarr;
               </Text>
               <Text size="sm" fw={500}>
-                {formatValue(newLatest, param.unit)}
+                {formatValue(newComparison!, param.unit, param.category)}
               </Text>
               <Badge size="xs" variant="light" color={changeColor}>
-                {formatPercent(pctLatest!)}
+                {formatPercent(pctComparison!)}
               </Badge>
             </>
           ) : (
             <Text size="sm" fw={500}>
-              {formatValue(newLatest, param.unit)}
+              {formatValue(newLatest, param.unit, param.category)}
             </Text>
           )}
         </Group>

@@ -14,7 +14,7 @@ export function ComparisonChart({ param, paramKey: _paramKey }: ComparisonChartP
   const oldYears = Object.keys(param.old).sort();
   const allYears = Array.from(new Set([...oldYears, ...newYears])).sort();
 
-  const formatFn = param.unit === 'currency-USD' ? formatCurrency : formatCpiValue;
+  const formatFn = param.category === 'cpi' ? formatCpiValue : (param.unit === 'currency-USD' ? formatCurrency : formatCpiValue);
 
   const hasOld = oldYears.length > 0;
 

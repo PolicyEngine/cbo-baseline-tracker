@@ -17,13 +17,20 @@ export function ChangeHeatmap({ parameters, category }: ChangeHeatmapProps) {
     return null;
   }
 
+  // Only show projection years (2024+) to keep the heatmap focused
   const allYears = new Set<string>();
   for (const [, param] of filtered) {
     for (const year of Object.keys(param.pct_change)) {
-      allYears.add(year);
+      if (parseInt(year) >= 2024) {
+        allYears.add(year);
+      }
     }
   }
   const years = Array.from(allYears).sort();
+
+  if (years.length === 0) {
+    return null;
+  }
 
   const labels = filtered.map(([, param]) => param.label);
   const z = filtered.map(([, param]) =>
