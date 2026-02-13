@@ -69,7 +69,7 @@ export const typography = {
     secondary: "'Public Sans', sans-serif",
     body: "'Roboto', sans-serif",
     mono: "'JetBrains Mono', 'Fira Code', monospace",
-    chart: "'Roboto Serif', serif",
+    chart: "'Roboto', sans-serif",
   },
   fontSize: {
     xs: '12px',
