@@ -6,6 +6,7 @@ import { CategoryFilter } from './CategoryFilter';
 import { ParameterCard } from './ParameterCard';
 import { ComparisonChart } from './ComparisonChart';
 import { ChangeHeatmap } from './ChangeHeatmap';
+import { AggregatePanel } from './AggregatePanel';
 
 interface DashboardProps {
   data: CBOComparison | null;
@@ -84,6 +85,8 @@ export function Dashboard({ data, loading, error }: DashboardProps) {
           <Title order={4} mb="sm">Change heatmap</Title>
           <ChangeHeatmap parameters={data.parameters} category={selectedCategory} />
         </div>
+
+        <AggregatePanel />
       </Stack>
     </Container>
   );
