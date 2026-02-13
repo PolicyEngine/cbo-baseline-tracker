@@ -17,10 +17,10 @@ import yaml
 
 REPO_DIR = Path("/Users/maxghenis/PolicyEngine/policyengine-us")
 
-OLD_COMMIT = "8e42654b85"
+OLD_COMMIT = "fe31d2b3a1"  # Sep 2025 CPI update + Jan 2025 non-CPI params
 NEW_COMMIT = "f99b4cd80e"
 
-OLD_LABEL = "January 2025"
+OLD_LABEL = "Sep 2025 (CPI) + Jan 2025 (other)"
 NEW_LABEL = "February 2026"
 
 SOURCE_URL = "https://www.cbo.gov/publication/61882"
