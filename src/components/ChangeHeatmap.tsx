@@ -1,7 +1,13 @@
 import Plot from 'react-plotly.js';
 import type { Data, Layout } from 'plotly.js';
 import type { ParameterData, Category } from '@/data/types';
+import { formatCurrency, formatCpiValue } from '@/utils/formatters';
 import { chartLayout, chartColors } from '@/designTokens';
+
+function formatValue(value: number | undefined, unit: string): string {
+  if (value === undefined) return 'N/A';
+  return unit === 'currency-USD' ? formatCurrency(value) : formatCpiValue(value);
+}
 
 interface ChangeHeatmapProps {
   parameters: Record<string, ParameterData>;
@@ -37,7 +43,18 @@ export function ChangeHeatmap({ parameters, category }: ChangeHeatmapProps) {
     years.map((y) => param.pct_change[y] ?? 0),
   );
   const hoverText = filtered.map(([, param]) =>
-    years.map((y) => `${param.label}<br>Year: ${y}<br>Change: ${(param.pct_change[y] ?? 0).toFixed(1)}%`),
+    years.map((y) => {
+      const oldVal = param.old[y];
+      const newVal = param.new[y];
+      const chg = param.pct_change[y];
+      return [
+        `<b>${param.label}</b>`,
+        `Year: ${y}`,
+        `Prior: ${formatValue(oldVal, param.unit)}`,
+        `New: ${formatValue(newVal, param.unit)}`,
+        `Change: ${chg !== undefined ? (chg >= 0 ? '+' : '') + chg.toFixed(1) + '%' : 'N/A'}`,
+      ].join('<br>');
+    }),
   );
 
   // Cap scale at 50% so outliers don't wash out the rest
