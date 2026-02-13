@@ -9,7 +9,7 @@ export default function App() {
 
   return (
     <MantineProvider theme={theme}>
-      <Header />
+      <Header metadata={data?.metadata} />
       <Dashboard data={data} loading={loading} error={error} />
     </MantineProvider>
   );

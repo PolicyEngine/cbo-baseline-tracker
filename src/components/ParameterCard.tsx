@@ -33,14 +33,15 @@ function Sparkline({ oldValues, newValues }: { oldValues: number[]; newValues: n
   const max = Math.max(...allValues);
   const range = max - min || 1;
 
-  const width = 120;
-  const height = 32;
-  const padY = 2;
+  const width = 200;
+  const height = 36;
+  const padY = 3;
 
   function toPoints(values: number[]): string {
     return values
-      .map((v, i) => {
-        const x = values.length > 1 ? (i / (values.length - 1)) * width : width / 2;
+      .filter(v => v !== undefined)
+      .map((v, i, arr) => {
+        const x = arr.length > 1 ? (i / (arr.length - 1)) * width : width / 2;
         const y = height - padY - ((v - min) / range) * (height - 2 * padY);
         return `${x},${y}`;
       })
@@ -48,7 +49,7 @@ function Sparkline({ oldValues, newValues }: { oldValues: number[]; newValues: n
   }
 
   return (
-    <svg width={width} height={height} aria-hidden="true">
+    <svg width="100%" height={height} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" aria-hidden="true">
       <polyline
         points={toPoints(oldValues)}
         fill="none"
@@ -90,7 +91,7 @@ export function ParameterCard({ param, paramKey: _paramKey, onClick }: Parameter
       withBorder
       padding="md"
       onClick={onClick}
-      style={{ cursor: 'pointer', transition: 'box-shadow 0.15s ease' }}
+      style={{ cursor: 'pointer' }}
       data-testid="parameter-card"
     >
       <Stack gap="xs">
@@ -103,16 +104,14 @@ export function ParameterCard({ param, paramKey: _paramKey, onClick }: Parameter
           </Badge>
         </Group>
 
-        <Group gap="xs" align="center">
+        <Group gap="xs" align="center" wrap="nowrap">
           {hasComparison ? (
             <>
-              <Text size="xs" c="dimmed">
+              <Text size="xs" c="dimmed" style={{ whiteSpace: 'nowrap' }}>
                 {formatValue(oldComparison!, param.unit, param.category)}
               </Text>
-              <Text size="xs" c="dimmed">
-                &rarr;
-              </Text>
-              <Text size="sm" fw={500}>
+              <Text size="xs" c="dimmed">&rarr;</Text>
+              <Text size="sm" fw={500} style={{ whiteSpace: 'nowrap' }}>
                 {formatValue(newComparison!, param.unit, param.category)}
               </Text>
               <Badge size="xs" variant="light" color={changeColor}>
@@ -125,6 +124,10 @@ export function ParameterCard({ param, paramKey: _paramKey, onClick }: Parameter
             </Text>
           )}
         </Group>
+
+        {comparisonYear && (
+          <Text size="xs" c="dimmed">in {comparisonYear}</Text>
+        )}
 
         <Sparkline oldValues={oldValues} newValues={newValues} />
       </Stack>

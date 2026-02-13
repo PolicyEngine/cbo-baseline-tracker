@@ -40,10 +40,9 @@ export function ChangeHeatmap({ parameters, category }: ChangeHeatmapProps) {
     years.map((y) => `${param.label}<br>Year: ${y}<br>Change: ${(param.pct_change[y] ?? 0).toFixed(1)}%`),
   );
 
-  const maxAbs = Math.max(
-    ...z.flat().map((v) => Math.abs(v)),
-    0.1,
-  );
+  // Cap scale at 50% so outliers don't wash out the rest
+  const rawMax = Math.max(...z.flat().map((v) => Math.abs(v)), 0.1);
+  const maxAbs = Math.min(rawMax, 50);
 
   const traces: Data[] = [
     {
