@@ -17,10 +17,10 @@ import yaml
 
 REPO_DIR = Path("/Users/maxghenis/PolicyEngine/policyengine-us")
 
-OLD_COMMIT = "23e7d802b7"
+OLD_COMMIT = "8e42654b85"
 NEW_COMMIT = "f99b4cd80e"
 
-OLD_LABEL = "February 2024"
+OLD_LABEL = "January 2025"
 NEW_LABEL = "February 2026"
 
 SOURCE_URL = "https://www.cbo.gov/publication/61882"
