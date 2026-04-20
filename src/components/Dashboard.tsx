@@ -47,13 +47,13 @@ export function Dashboard({ data, loading, error }: DashboardProps) {
   const selectedParamData = selectedParam ? data.parameters[selectedParam] : null;
 
   return (
-    <Container size="xl" py="lg">
+    <Container component="main" size="xl" py="lg" role="main">
       <Stack gap="xl">
         <CategoryFilter value={selectedCategory} onChange={setSelectedCategory} />
 
-        <div>
+        <section aria-label="Parameter projections">
           <Group justify="space-between" mb="sm">
-            <Title order={4}>Parameter projections</Title>
+            <Title order={2} size="h4">Parameter projections</Title>
             <Text size="sm" c="dimmed">{filteredParams.length} parameters</Text>
           </Group>
           <Grid>
@@ -67,7 +67,7 @@ export function Dashboard({ data, loading, error }: DashboardProps) {
               </Grid.Col>
             ))}
           </Grid>
-        </div>
+        </section>
 
         <Modal
           opened={selectedParam !== null}
@@ -81,10 +81,10 @@ export function Dashboard({ data, loading, error }: DashboardProps) {
           )}
         </Modal>
 
-        <div>
-          <Title order={4} mb="sm">Change heatmap</Title>
+        <section aria-label="Change heatmap">
+          <Title order={2} size="h4" mb="sm">Change heatmap</Title>
           <ChangeHeatmap parameters={data.parameters} category={selectedCategory} />
-        </div>
+        </section>
 
         <AggregatePanel />
       </Stack>

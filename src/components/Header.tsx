@@ -9,8 +9,10 @@ interface HeaderProps {
 export function Header({ metadata }: HeaderProps) {
   return (
     <Box
+      component="header"
       py="lg"
       px="xl"
+      role="banner"
       style={{
         backgroundColor: colors.background.primary,
         borderBottom: `1px solid ${colors.border.light}`,
@@ -25,8 +27,8 @@ export function Header({ metadata }: HeaderProps) {
           >
             PolicyEngine
           </Text>
-          <Title order={2} mt={4}>
-            CBO baseline tracker
+          <Title order={1} size="h2" mt={4}>
+            CBO Baseline Tracker
           </Title>
           {metadata ? (
             <Group gap="xs" mt={8}>
@@ -44,14 +46,16 @@ export function Header({ metadata }: HeaderProps) {
             </Text>
           )}
         </div>
-        <Anchor
-          href="https://www.cbo.gov/data/budget-economic-data"
-          target="_blank"
-          rel="noopener noreferrer"
-          size="sm"
-        >
-          CBO source data
-        </Anchor>
+        <nav aria-label="External resources">
+          <Anchor
+            href="https://www.cbo.gov/data/budget-economic-data"
+            target="_blank"
+            rel="noopener noreferrer"
+            size="sm"
+          >
+            CBO source data
+          </Anchor>
+        </nav>
       </Group>
     </Box>
   );

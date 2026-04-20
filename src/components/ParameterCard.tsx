@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, Text, Badge, Group, Stack } from '@mantine/core';
 import type { ParameterData } from '@/data/types';
 import { formatCurrency, formatPercent, formatCpiValue } from '@/utils/formatters';
@@ -88,11 +89,16 @@ export function ParameterCard({ param, paramKey: _paramKey, onClick }: Parameter
 
   return (
     <Card
+      component="article"
       withBorder
       padding="md"
       onClick={onClick}
       style={{ cursor: 'pointer' }}
       data-testid="parameter-card"
+      role="button"
+      tabIndex={0}
+      aria-label={`View details for ${param.label}`}
+      onKeyDown={(e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
     >
       <Stack gap="xs">
         <Group justify="space-between" align="flex-start">
