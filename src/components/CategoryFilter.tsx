@@ -16,11 +16,14 @@ const options = [
 
 export function CategoryFilter({ value, onChange }: CategoryFilterProps) {
   return (
-    <SegmentedControl
-      value={value}
-      onChange={(val) => onChange(val as Category)}
-      data={options}
-      size="sm"
-    />
+    <nav aria-label="Filter by category">
+      <SegmentedControl
+        value={value}
+        onChange={(val) => onChange(val as Category)}
+        data={options}
+        size="sm"
+        aria-label="Category filter"
+      />
+    </nav>
   );
 }

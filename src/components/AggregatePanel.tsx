@@ -250,9 +250,9 @@ export function AggregatePanel() {
   const latestYear = overlapYears[overlapYears.length - 1] ?? data.years[data.years.length - 1];
 
   return (
-    <Stack gap="lg" data-testid="aggregate-panel">
+    <Stack component="section" gap="lg" data-testid="aggregate-panel" aria-label="Aggregate fiscal impact">
       <div>
-        <Title order={4} mb="xs">Aggregate fiscal impact</Title>
+        <Title order={2} size="h4" mb="xs">Aggregate fiscal impact</Title>
         <Text size="sm" c="dimmed" mb="sm">
           Comparing {data.metadata.old_baseline} with {data.metadata.new_baseline} CBO baselines
         </Text>
