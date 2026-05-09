@@ -10,7 +10,7 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     server: {
       deps: {
-        inline: ['@policyengine/design-system'],
+        inline: ['@policyengine/ui-kit'],
       },
     },
   },

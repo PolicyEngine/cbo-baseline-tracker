@@ -1,6 +1,6 @@
 import { createTheme } from '@mantine/core';
 import type { MantineColorsTuple } from '@mantine/core';
-import { colors, typography } from '@policyengine/design-system/tokens';
+import { colors, typography } from './designTokens';
 
 const primary: MantineColorsTuple = [
   colors.primary[50],
