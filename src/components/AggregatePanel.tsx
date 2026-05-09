@@ -1,6 +1,8 @@
+'use client';
+
 import { Card, Text, Group, Stack, SimpleGrid, Badge, Loader, Alert, Center, Title } from '@mantine/core';
 import { IconAlertCircle, IconTrendingUp, IconTrendingDown } from '@tabler/icons-react';
-import Plot from 'react-plotly.js';
+import Plot from '@/components/charts/Plot';
 import type { Data, Layout } from 'plotly.js';
 import type { AggregateImpacts, AggregateMetric } from '@/data/types';
 import { useAggregateData } from '@/data/useAggregateData';

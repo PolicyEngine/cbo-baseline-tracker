@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Card, Text, Badge, Group, Stack } from '@mantine/core';
 import type { ParameterData } from '@/data/types';

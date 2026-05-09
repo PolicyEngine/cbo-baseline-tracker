@@ -1,4 +1,6 @@
-import Plot from 'react-plotly.js';
+'use client';
+
+import Plot from '@/components/charts/Plot';
 import type { Data, Layout } from 'plotly.js';
 import type { ParameterData } from '@/data/types';
 import { chartLayout, chartColors } from '@/designTokens';
