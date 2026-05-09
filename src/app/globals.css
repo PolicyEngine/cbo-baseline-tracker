@@ -1,4 +1,6 @@
-@import '@mantine/core/styles.css';
+@import "tailwindcss";
+@import "@policyengine/ui-kit/theme.css";
+@import "@mantine/core/styles.css";
 
 * {
   box-sizing: border-box;
@@ -8,11 +10,7 @@
 
 body {
   min-height: 100vh;
-  background-color: #F5F9FF;
-}
-
-#root {
-  min-height: 100vh;
+  background-color: #f5f9ff;
 }
 
 /* Card hover lift effect */

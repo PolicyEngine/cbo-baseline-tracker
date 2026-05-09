@@ -4,7 +4,10 @@ import { MantineProvider } from '@mantine/core';
 import { theme } from '@/theme';
 import type { ParameterData } from '@/data/types';
 
-vi.mock('react-plotly.js', () => ({
+// The Plotly wrapper at @/components/charts/Plot uses next/dynamic with
+// ssr: false, which never resolves under jsdom. Mock the wrapper directly so
+// the component's render output is observable in tests.
+vi.mock('@/components/charts/Plot', () => ({
   default: ({ data, layout }: { data: unknown[]; layout: { title?: { text?: string } } }) => (
     <div data-testid="plotly-heatmap" data-traces={data.length} data-title={layout?.title?.text} />
   ),

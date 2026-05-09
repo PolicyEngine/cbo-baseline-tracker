@@ -1,3 +1,5 @@
+'use client';
+
 import { Box, Title, Text, Group, Anchor, Badge } from '@mantine/core';
 import { colors } from '@/designTokens';
 import type { CBOComparison } from '@/data/types';

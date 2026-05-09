@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Container, Grid, Modal, Stack, Loader, Alert, Center, Title, Text, Group } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';

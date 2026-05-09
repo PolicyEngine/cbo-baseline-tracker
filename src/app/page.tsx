@@ -1,10 +1,12 @@
-import { MantineProvider } from '@mantine/core';
-import { theme } from './theme';
-import { Header } from './components/Header';
-import { Dashboard } from './components/Dashboard';
-import { useData } from './data/useData';
+'use client';
 
-export default function App() {
+import { MantineProvider } from '@mantine/core';
+import { theme } from '@/theme';
+import { Header } from '@/components/Header';
+import { Dashboard } from '@/components/Dashboard';
+import { useData } from '@/data/useData';
+
+export default function HomePage() {
   const { data, loading, error } = useData();
 
   return (

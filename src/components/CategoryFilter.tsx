@@ -1,3 +1,5 @@
+'use client';
+
 import { SegmentedControl } from '@mantine/core';
 import type { Category } from '@/data/types';
 
